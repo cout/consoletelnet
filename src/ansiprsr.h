@@ -16,6 +16,11 @@ static const int ANSIColors[] = {BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN,
 // 200 should suffice
 #define MAX_TAB_POSITIONS 200
 
+// Added by Frediano Ziglio 6/2/2000
+// Include Meridian Emulator support
+// undefine it to remove support
+#define MTE_SUPPORT 1
+
 // TANSIParser is now properly no longer a base class for TTelnetParser.
 // Screen output is handled in TConsole.cpp.
 // (Paul Brannan 6/15/98)
@@ -27,6 +32,12 @@ private:
 	// Added by I.Ioannou 06/04/97
 	char* PrintBuffer(char* pszBuffer, char* pszBufferEnd);
 	char* PrintGoodChars(char * pszHead, char * pszTail);
+
+#ifdef MTE_SUPPORT
+    // Added by Frediano Ziglio, 5/31/2000
+    char* ParseEscapeMTE(char* pszBuffer, char* pszBufferEnd);
+	short int mteRegionXF,mteRegionYF;
+#endif
 
 	void ConSetAttribute(unsigned char wAttr);
 	char *GetTerminalID();

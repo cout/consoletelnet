@@ -768,7 +768,123 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 	return pszBuffer;
 }
 
+#ifdef MTE_SUPPORT
+// Added by Frediano Ziglio, 5/31/2000
+// MTE extension
+// initially copied from ParseEscapeANSI
+char* TANSIParser::ParseEscapeMTE(char* pszBuffer, char* pszBufferEnd)
+{
+	//      The buffer contains something like <ESC>~pA
+	//      where p is an optional decimal number specifying the count by which the
+	//      appropriate action should take place.
+	//      The pointer pszBuffer points us to the p, <ESC> and ~ are
+	//      already 'consumed'
+	//      TITUS: Simplification of the code: Assume default count of 1 in case
+	//      there are no parameters.
+	char tmpc;
+	const int nParam = 10;  // Maximum number of parameters
+	int     iParam[nParam] = {1, 0, 0, 0, 0};       // Assume 1 parameter, Default 1
+	int iCurrentParam = 0;
+	char sRepeat[2];
+	
+	// Get parameters from escape sequence.
+	while ((tmpc = *pszBuffer) <= '?') {
+		if(tmpc < '0' || tmpc > '9') {
+			// Check for parameter delimiter.
+			if(tmpc == ';') {
+				pszBuffer++;
+				continue;
+			}
+			pszBuffer++;
+		}
+		
+		//  Got Numerical Parameter.
+		iParam[iCurrentParam] = strtoul(pszBuffer, &pszBuffer, 10);
+		if (iCurrentParam < nParam)
+			iCurrentParam++;
+	}
+	
+	//~~~ TITUS: Apparently the digit is optional (look at termcap or terminfo)
+	// So: If there is no digit, assume a count of 1
+	
+	switch ((unsigned char)*pszBuffer++) {
+	case 'A':
+		// set colors
+		if (iCurrentParam < 2 )
+			break;
+		if (iParam[0] <= 15 && iParam[1] <= 15)
+			Console.SetAttrib( (iParam[1] << 4) | iParam[0] );
+		break;
+		
+	case 'R':
+		// define region
+		mteRegionXF = -1;
+		if (iCurrentParam < 2 )
+			break;
+		mteRegionXF = iParam[1]-1;
+		mteRegionYF = iParam[0]-1;
+		break;
+		
+	case 'F':
+		// fill with char
+		{
+			if (mteRegionXF == -1 || iCurrentParam < 1)
+				break;
+			sRepeat[0] = (char)iParam[0];
+			sRepeat[1] = '\0';
+			int xi = Console.GetCursorX(),yi = Console.GetCursorY();
+			int xf = mteRegionXF;
+			int yf = mteRegionYF;
+			mteRegionXF = -1;
+			for(int y=yi;y<=yf;++y)
+			{
+				Console.SetCursorPosition(xi,y);
+				for(int x=xi;x<=xf;++x)
+					
+					Console.WriteStringFast(sRepeat,1);
+			}
+		}
+		break;
+		
+	case 'S':
+		// Scroll region
+		{
+			if (mteRegionXF == -1 || iCurrentParam < 2)
+				break;
+			int x = Console.GetCursorX(),y = Console.GetCursorY();
+			int xf = mteRegionXF;
+			int yf = mteRegionYF;
+			mteRegionXF = -1;
+			// !!! don't use x during scroll
+			int diff = (iParam[0]-1)-y;
+			if (diff<0)
+				Console.ScrollDown(y-1,yf,diff);
+			else
+				Console.ScrollDown(y,yf+1,diff);
+		}
+		break;
+		// Meridian main version ??
+	case 'x':
+		// disable echo and line mode
+		Network.set_local_echo(0);
+		Network.set_line_mode(0);
+		// Meridian Server handle cursor itself
+		Console.SetCursorSize(0);
+		break;
+		// query ??
+	case 'Q':
+		if (iParam[0] == 1)
+			Network.WriteString("\033vga.",5);
+		break;
+	}
+	
+	return pszBuffer;
+ }
+#endif
+
 char* TANSIParser::ParseEscape(char* pszBuffer, char* pszBufferEnd) {
+	char *pszChar;
+
 	// Check if we have enough characters in buffer.
 	if ((pszBufferEnd - pszBuffer) < 2)
 		return pszBuffer;
@@ -940,7 +1056,7 @@ char* TANSIParser::ParseEscape(char* pszBuffer, char* pszBufferEnd) {
 		case '[':
 			// Check if we have whole escape sequence in buffer.
 			// This should not be isalpha anymore (Paul Brannan 9/1/98)
-			char* pszChar = pszBuffer;
+			pszChar = pszBuffer;
 			while ((pszChar < pszBufferEnd) && (*pszChar <= '?'))
 				pszChar++;
 			if (pszChar == pszBufferEnd)
@@ -948,6 +1064,21 @@ char* TANSIParser::ParseEscape(char* pszBuffer, char* pszBufferEnd) {
 			else
 				pszBuffer = ParseEscapeANSI(pszBuffer, pszBufferEnd);
 			break;
+#ifdef MTE_SUPPORT
+		case '~':
+			// Frediano Ziglio, 5/31/2000
+			// Meridian Terminal Emulator extension
+			// !!! same as ANSI
+			// !!! should put in MTE procedure
+			pszChar = pszBuffer;
+			while ((pszChar < pszBufferEnd) && (*pszChar <= '?'))
+				pszChar++;
+			if (pszChar == pszBufferEnd)
+				pszBuffer -= 2;
+			else
+				pszBuffer = ParseEscapeMTE(pszBuffer, pszBufferEnd);
+			break;
+#endif
 	}
 
 	return pszBuffer;
