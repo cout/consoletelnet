@@ -76,6 +76,7 @@ TConfig::TConfig() {
 	wide_enable = FALSE;
 	keyboard_paste = FALSE;
 	set_title = TRUE;
+	xdisploc = TRUE;
 
 	blink_bg = -1;
 	blink_fg = 2;
@@ -155,6 +156,7 @@ enum {
 	CTRLBREAK_AS_CTRLC,
 	BUFFER_SIZE,
 	SET_TITLE,
+	XDISPLOC,
 	BLINK_BG,
 	BLINK_FG,
 	UNDERLINE_BG,
@@ -239,6 +241,7 @@ void TConfig::init_varlist() {
 		{"Ctrlbreak_as_Ctrlc","Keyboard", INI_BOOL,		&ctrlbreak_as_ctrlc, 0},
 		{"Buffer_Size",	"Terminal",		INI_INT,		&buffer_size, 0},
 		{"Set_Title",	"Terminal",		INI_BOOL,		&set_title, 0},
+		{"XDipsLoc",	"Terminal",		INI_BOOL,		&xdisploc, 0},
 		{"Blink_bg",	"Colors",		INI_INT,		&blink_bg, 0},
 		{"Blink_fg",	"Colors",		INI_INT,		&blink_fg, 0},
 		{"Underline_bg","Colors",		INI_INT,		&underline_bg, 0},

@@ -243,10 +243,15 @@ char* TTelnetHandler::ParseIAC(char* pszBuffer, char* pszBufferEnd)
 					break;
 				case TELOPT_XDISPLOC:
 					TELOPT_PRINTD("RCVD DO TELOPT_XDISPLOC\n");
-					SendIAC(WILL, TELOPT_XDISPLOC);
-					TELOPT_PRINTD("SENT WILL TELOPT_XDISPLOC\n");
-					printit("Retrieving IP...");
-						break;
+					if(ini.get_xdisploc()) {
+						SendIAC(WILL, TELOPT_XDISPLOC);
+						TELOPT_PRINTD("SENT WILL TELOPT_XDISPLOC\n");
+						printit("Retrieving IP...");
+					} else {
+						SendIAC(WONT, TELOPT_XDISPLOC);
+						TELOPT_PRINTD("SENT WONT TELOPT_XDISPLOC\n");
+					}
+					break;
 				default:
 					TELOPT_PRINTD2("RCVD DO", pszBuffer[2]);
 					SendIAC(WONT, pszBuffer[2]);
@@ -393,6 +398,7 @@ char* TTelnetHandler::ParseIAC(char* pszBuffer, char* pszBufferEnd)
 					}
 						break;
 				case TELOPT_XDISPLOC:
+					if(!ini.get_xdisploc()) break;
 					if(pszBuffer + 5 < pszBufferEnd) {
 						TELOPT_PRINTD("RCVD SB XDISPLOC\n");
 						SendIAC(SB, TELOPT_XDISPLOC);

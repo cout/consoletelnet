@@ -61,6 +61,7 @@ public:
 	bool get_wide_enable() const {return wide_enable;}
 	bool get_control_break_as_c() const {return ctrlbreak_as_ctrlc;}
 	int get_buffer_size() const {return buffer_size;}
+	bool get_xdisploc() const {return xdisploc;}
 
 	// Colors
 	int get_blink_bg() const {return blink_bg;}
@@ -153,6 +154,7 @@ private:
 	bool lock_linewrap;
 	bool fast_write;
 	bool set_title;
+	bool xdisploc;
 	int  term_width, term_height;
 	int  window_width, window_height;
 	bool wide_enable;

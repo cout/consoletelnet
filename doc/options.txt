@@ -107,6 +107,12 @@ If enabled, this option will attempt to strip the stream before passing it on
 through redirected output.  This will have no effect on non-redirected output.
 (Default=FALSE)
 
+XDispLoc
+This option causes telnet to update the remote host's DISPLAY environment
+variable, which is useful for displaying X programs with an X server such as
+MI/X or XWin32.  Disable it if you do not wish this to be set.  Also disable
+it for SCO Admin tools to be run in text mode.  (Default=TRUE)
+
 [Colors] section
 
 Setting the following to -1 disables them:
