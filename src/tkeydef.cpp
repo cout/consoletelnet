@@ -59,11 +59,15 @@ TKeyDef::TKeyDef(optype op, DWORD state, DWORD code) {
 }
 
 TKeyDef::TKeyDef(const TKeyDef &t) {
-	if(t.uKeyDef.szKeyDef != NULL && *t.uKeyDef.szKeyDef != 0) {
+	if(t.uKeyDef.szKeyDef == NULL) {
+		uKeyDef.szKeyDef = (char *)NULL;
+	} else if(t.uKeyDef.op->sendstr == 0) {
+		uKeyDef.op = new optype;
+		uKeyDef.op->sendstr = 0;
+		uKeyDef.op->the_op = t.uKeyDef.op->the_op;
+	} else {
 		uKeyDef.szKeyDef = new char[strlen(t.uKeyDef.szKeyDef)+1];
 		strcpy(uKeyDef.szKeyDef, t.uKeyDef.szKeyDef);
-	} else {
-		uKeyDef.szKeyDef = (char *)NULL;
 	}
 	dwState = t.dwState;
 	vk_code = t.vk_code;

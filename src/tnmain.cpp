@@ -209,12 +209,7 @@ struct cmdHistory * cfgets (char *buf, unsigned int length, struct cmdHistory *c
 					break;
 					
 				default:
-					// Paul Brannan 6/25/98
-					// #ifdef __MINGW32__
-					// 					chr = InputRecord.Event.KeyEvent.AsciiChar;
-					// #else
 					chr = InputRecord.Event.KeyEvent.uChar.AsciiChar;
-					// #endif
 					if (chr == '\r') {
 						done = TRUE;
 						continue;
@@ -330,7 +325,6 @@ int main(int ArgC, char* ArgV[]) {
 	// ("Pedro A. Aranda Gutiérrez" <paag@coppi.tid.es>)
 	TCHAR ConsoleTitle[255];
 	GetConsoleTitle(ConsoleTitle, sizeof(ConsoleTitle));
-
 	
 	k = strrchr(startdir, '\\');
 	if (k == NULL){						// if the \ character is not found...
@@ -341,20 +335,23 @@ int main(int ArgC, char* ArgV[]) {
 		strcpy(exename, k+1);
 		k[1] = 0;
 	}
-	
+
 	printm(0, FALSE, MSG_COPYRIGHT);
 	printm(0, FALSE, MSG_COPYRIGHT_1);
-	ini.init(startdir, exename);						// set up the ini class
+	
+	// set up the ini class
+	ini.init(startdir, exename);					
+
 	// Process the command line arguments and connect to a host if necessary
 	if(ini.Process_Params(ArgC, ArgV)) {
 		const char *szHost = ini.get_host();
 		const char *strPort = ini.get_port();
 		if(!*szHost) {
 			Telnet MyConnection;
-			telCommandLine(MyConnection);
+			while(telCommandLine(MyConnection));
 		} else {
 			Telnet MyConnection;
-			if(MyConnection.Open(szHost, strPort)) // still connected
+			if(MyConnection.Open(szHost, strPort) == TNPROMPT) // still connected
 				telCommandLine(MyConnection);
 		}
 	}
@@ -363,16 +360,16 @@ int main(int ArgC, char* ArgV[]) {
 	if(ini.get_term_width() != -1 || ini.get_term_height() != -1) {
 		SetConsoleScreenBufferSize(
 			GetStdHandle(STD_OUTPUT_HANDLE),	// handle of console screen buffer
-			ConsoleScreenBufferInfo.dwSize 	// new size in character rows and cols.
+			ConsoleScreenBufferInfo.dwSize		// new size in character rows and cols.
 			);
 		SetConsoleWindowInfo(
 			GetStdHandle(STD_OUTPUT_HANDLE),	// handle of console screen buffer
-			TRUE,	// coordinate type flag
+			TRUE,								// coordinate type flag
 			&ConsoleScreenBufferInfo.srWindow 	// address of new window rectangle
 			);
 	}
 	SetConsoleTextAttribute(
-		GetStdHandle(STD_OUTPUT_HANDLE),	// handle of console screen buffer
+		GetStdHandle(STD_OUTPUT_HANDLE),		// handle of console screen buffer
 		ConsoleScreenBufferInfo.wAttributes 	// text and background colors
 		);
 
@@ -424,7 +421,7 @@ struct command {
 };
 
 command cmdList[__COMMAND_LIST_SIZE] = {
-	{"open",     2,	1,  2,	-1,		0,	"op[en] host [port]\n"},
+	{"open",     1,	1,  2,	-1,		0,	"o[pen] host [port]\n"},
 	{"close",    2,	0,  0,	-1,		0,	NULL},
 	{"keys",     2,	1,  3,	-1,		1,	"ke[ys] l[oad] keymapname [file]\n"
 										"ke[ys] d[isplay]\n"
@@ -557,7 +554,7 @@ int tokenizeCommand(char* szCommand, int& argc, char** argv) {
 
 int telCommandLine (Telnet &MyConnection){
 #define HISTLENGTH 25
-	int i;
+	int i, retval;
 	char* Parms[MAX_PARM_COUNT];
 	char szCommand[80];
 	int bDone = 0;
@@ -565,9 +562,9 @@ int telCommandLine (Telnet &MyConnection){
 	struct cmdHistory *cmdhist;
 	cmdhist = NULL;
 	
-	printit("\n");  // crn@ozemail.com.au 14/12/98
+	// printit("\n");  // crn@ozemail.com.au 14/12/98
 	while (!bDone){
-		//		printit("\n"); // Paul Brannan 5/25/98
+		// printit("\n"); // Paul Brannan 5/25/98
 		printit( "telnet>");
 		cmdhist = cfgets (szCommand, 79, cmdhist);
 		printit( "\n");
@@ -577,18 +574,22 @@ int telCommandLine (Telnet &MyConnection){
 		switch ( tokenizeCommand(szCommand, i, Parms) ) {
 		case BAD_USAGE:   break;
 		case EMPTY_LINE:  
-			if(MyConnection.Resume())
-				break;
-			else
-				return 1;
-		case INVALID_CMD: printm(0, FALSE, MSG_INVCMD); break;
-			
-		case OPEN:
-			if (i == 1){
-				MyConnection.Open(Parms[0], "23");
+			if(MyConnection.Resume() == TNPROMPT) {
+				printit("\n");
 				break;
 			}
-			MyConnection.Open(Parms[0], Parms[1]);
+			else
+			 	return 1;
+		case INVALID_CMD:
+			printm(0, FALSE, MSG_INVCMD);
+			break;			
+		case OPEN:
+			if (i == 1)
+				retval = MyConnection.Open(Parms[0], "23");
+			else
+				retval = MyConnection.Open(Parms[0], Parms[1]);
+			if(retval != TNNOCON && retval != TNPROMPT) return 1;
+			if(retval == TNPROMPT) printit("\n");
 			break;
 		case CLOSE:
 			MyConnection.Close();
@@ -710,5 +711,5 @@ int telCommandLine (Telnet &MyConnection){
 
 	}
 
-	return 1;
+	return 0;
 }

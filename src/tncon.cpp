@@ -250,8 +250,8 @@ int telProcessConsole(NetParams *pParams, KeyTranslator &KeyTrans,
 						// Moved the code that was here to FindClosestKey()
 						keydef.szKeyDef = FindClosestKey(keyCode,
 							keyState, KeyTrans);
-						
-						if(keydef.op) {
+
+						if(keydef.szKeyDef) {
 							if(!keydef.op->sendstr)
 								if((opval = do_op(keydef.op->the_op, Network,
 									Clipboard)) != 0)

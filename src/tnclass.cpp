@@ -226,6 +226,7 @@ int Telnet::Open(const char *szHost1, const char *strPort1){
 
 
 int Telnet::Close() {
+	Console.sync();
 	switch(Network.get_net_type()) {
 	case TN_NETSOCKET:
 		if(Socket != INVALID_SOCKET) closesocket(Socket);
@@ -260,6 +261,7 @@ int Telnet::Close() {
 int Telnet::Resume(){
 	int i;
 	if (bConnected) {
+		Console.sync();
 		for(;;){
 			SetEvent(ThreadParams.p.hUnPause);
 			i = telProcessConsole(&ThreadParams.p, KeyTrans, Console,
@@ -274,7 +276,7 @@ int Telnet::Resume(){
 			switch (i){
 			case TNNOCON:
 				Close();
-				return TNNOCON;
+				return TNDONE;
 			case TNPROMPT:
 				return TNPROMPT;
 			case TNSCROLLBACK:

@@ -245,7 +245,7 @@ char* TTelnetHandler::ParseIAC(char* pszBuffer, char* pszBufferEnd)
 					TELOPT_PRINTD("RCVD DO TELOPT_XDISPLOC\n");
 					SendIAC(WILL, TELOPT_XDISPLOC);
 					TELOPT_PRINTD("SENT WILL TELOPT_XDISPLOC\n");
-					printit("Retriving IP...");
+					printit("Retrieving IP...");
 						break;
 				default:
 					TELOPT_PRINTD2("RCVD DO", pszBuffer[2]);

@@ -5,15 +5,20 @@
 #include "tnclip.h"
 #include "ttelhndl.h"
 
-#define SC_UP   1
-#define SC_DOWN 2
-#define SC_ESC 0
-#define SC_MOUSE 3
+enum {
+	SC_UP,
+	SC_DOWN,
+	SC_ESC,
+	SC_MOUSE
+};
 
-#define TNNOCON 0
-#define TNPROMPT 1
-#define TNSCROLLBACK 2
-#define TNSPAWN 3
+enum {
+	TNNOCON,
+	TNPROMPT,
+	TNSCROLLBACK,
+	TNSPAWN,
+	TNDONE
+};
 
 int telProcessConsole(NetParams *pParams, KeyTranslator &KeyTrans,
 					  TConsole &Console, TNetwork &Network, TMouse &Mouse,

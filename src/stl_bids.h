@@ -4,6 +4,10 @@
 #ifndef STL_ARRAY_AS_VECTOR
 #define STL_ARRAY_AS_VECTOR
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4786)
+#endif
+
 // #include <vector.h>
 // #include <algo.h>
 #include <vector>
