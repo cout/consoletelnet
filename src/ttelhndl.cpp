@@ -246,7 +246,7 @@ char* TTelnetHandler::ParseIAC(char* pszBuffer, char* pszBufferEnd)
 					if(ini.get_xdisploc()) {
 						SendIAC(WILL, TELOPT_XDISPLOC);
 						TELOPT_PRINTD("SENT WILL TELOPT_XDISPLOC\n");
-						printit("Retrieving IP...");
+						TELOPT_PRINTD("Retrieving IP...");
 					} else {
 						SendIAC(WONT, TELOPT_XDISPLOC);
 						TELOPT_PRINTD("SENT WONT TELOPT_XDISPLOC\n");
