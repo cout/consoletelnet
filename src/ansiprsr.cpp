@@ -50,6 +50,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <windows.h>
+#include <string.h>
 #include "ansiprsr.h"
 
 // The constructor now takes different arguments and initializes different
@@ -571,6 +572,11 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 								break;
 							case 66: // Application numeric keypad
 								break;
+							default:
+#ifdef DEBUG
+								Console.Beep();
+#endif
+								break;
 						}
 					} else {
 						switch(iParam[i]) {
@@ -587,6 +593,11 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 							case 20: // Newline sends cr/lf
 								KeyTrans.set_ext_mode(APP4_KEY);
 								newline_mode = true;
+								break;
+							default:
+#ifdef DEBUG
+								Console.Beep();
+#endif
 								break;
 						}
 					}
@@ -652,6 +663,11 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 								break;
 							case 66: // Numeric keypad
 								break;
+							default:
+#ifdef DEBUG
+								Console.Beep();
+#endif
+								break;
 						}
 					} else {
 						switch(iParam[i]) {
@@ -668,6 +684,11 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 							case 20: // sends lf only
 								KeyTrans.unset_ext_mode(APP4_KEY);
 								newline_mode = false;
+								break;
+							default:
+#ifdef DEBUG
+								Console.Beep();
+#endif
 								break;
 						}
 					}
@@ -763,6 +784,11 @@ char* TANSIParser::ParseEscapeANSI(char* pszBuffer, char* pszBufferEnd)
 			else
 				Network.WriteString("\033[2;1;1;128;128;1;0x", 20);
 			break;
+		default:
+#ifdef DEBUG
+			Console.Beep();
+#endif
+			break;
 	}
 
 	return pszBuffer;
@@ -808,74 +834,79 @@ char* TANSIParser::ParseEscapeMTE(char* pszBuffer, char* pszBufferEnd)
 	// So: If there is no digit, assume a count of 1
 	
 	switch ((unsigned char)*pszBuffer++) {
-	case 'A':
-		// set colors
-		if (iCurrentParam < 2 )
-			break;
-		if (iParam[0] <= 15 && iParam[1] <= 15)
-			Console.SetAttrib( (iParam[1] << 4) | iParam[0] );
-		break;
-		
-	case 'R':
-		// define region
-		mteRegionXF = -1;
-		if (iCurrentParam < 2 )
-			break;
-		mteRegionXF = iParam[1]-1;
-		mteRegionYF = iParam[0]-1;
-		break;
-		
-	case 'F':
-		// fill with char
-		{
-			if (mteRegionXF == -1 || iCurrentParam < 1)
+		case 'A':
+			// set colors
+			if (iCurrentParam < 2 )
 				break;
-			sRepeat[0] = (char)iParam[0];
-			sRepeat[1] = '\0';
-			int xi = Console.GetCursorX(),yi = Console.GetCursorY();
-			int xf = mteRegionXF;
-			int yf = mteRegionYF;
+			if (iParam[0] <= 15 && iParam[1] <= 15)
+				Console.SetAttrib( (iParam[1] << 4) | iParam[0] );
+			break;
+			
+		case 'R':
+			// define region
 			mteRegionXF = -1;
-			for(int y=yi;y<=yf;++y)
+			if (iCurrentParam < 2 )
+				break;
+			mteRegionXF = iParam[1]-1;
+			mteRegionYF = iParam[0]-1;
+			break;
+			
+		case 'F':
+			// fill with char
 			{
-				Console.SetCursorPosition(xi,y);
-				for(int x=xi;x<=xf;++x)
-					
-					Console.WriteStringFast(sRepeat,1);
+				if (mteRegionXF == -1 || iCurrentParam < 1)
+					break;
+				sRepeat[0] = (char)iParam[0];
+				sRepeat[1] = '\0';
+				int xi = Console.GetCursorX(),yi = Console.GetCursorY();
+				int xf = mteRegionXF;
+				int yf = mteRegionYF;
+				mteRegionXF = -1;
+				for(int y=yi;y<=yf;++y)
+				{
+					Console.SetCursorPosition(xi,y);
+					for(int x=xi;x<=xf;++x)
+						
+						Console.WriteStringFast(sRepeat,1);
+				}
 			}
-		}
-		break;
-		
-	case 'S':
-		// Scroll region
-		{
-			if (mteRegionXF == -1 || iCurrentParam < 2)
-				break;
-			int x = Console.GetCursorX(),y = Console.GetCursorY();
-			int xf = mteRegionXF;
-			int yf = mteRegionYF;
-			mteRegionXF = -1;
-			// !!! don't use x during scroll
-			int diff = (iParam[0]-1)-y;
-			if (diff<0)
-				Console.ScrollDown(y-1,yf,diff);
-			else
-				Console.ScrollDown(y,yf+1,diff);
-		}
-		break;
-		// Meridian main version ??
-	case 'x':
-		// disable echo and line mode
-		Network.set_local_echo(0);
-		Network.set_line_mode(0);
-		// Meridian Server handle cursor itself
-		Console.SetCursorSize(0);
-		break;
-		// query ??
-	case 'Q':
-		if (iParam[0] == 1)
-			Network.WriteString("\033vga.",5);
-		break;
+			break;
+			
+		case 'S':
+			// Scroll region
+			{
+				if (mteRegionXF == -1 || iCurrentParam < 2)
+					break;
+				int /*x = Console.GetCursorX(),*/y = Console.GetCursorY();
+				// int xf = mteRegionXF;
+				int yf = mteRegionYF;
+				mteRegionXF = -1;
+				// !!! don't use x during scroll
+				int diff = (iParam[0]-1)-y;
+				if (diff<0)
+					Console.ScrollDown(y-1,yf,diff);
+				else
+					Console.ScrollDown(y,yf+1,diff);
+			}
+			break;
+			// Meridian main version ??
+		case 'x':
+			// disable echo and line mode
+			Network.set_local_echo(0);
+			Network.set_line_mode(0);
+			// Meridian Server handle cursor itself
+			Console.SetCursorSize(0);
+			break;
+			// query ??
+		case 'Q':
+			if (iParam[0] == 1)
+				Network.WriteString("\033vga.",5);
+			break;
+		default:
+#ifdef DEBUG
+			Console.Beep();
+#endif
+			break;
 	}
 	
 	return pszBuffer;
@@ -1079,6 +1110,11 @@ char* TANSIParser::ParseEscape(char* pszBuffer, char* pszBufferEnd) {
 				pszBuffer = ParseEscapeMTE(pszBuffer, pszBufferEnd);
 			break;
 #endif
+		default:
+#ifdef DEBUG
+			Console.Beep();
+#endif
+			break;
 	}
 
 	return pszBuffer;

@@ -1,13 +1,6 @@
 #ifndef ___TELNET_H
 #define ___TELNET_H
 
-// Mingw32 doesn't use winsock.h (Paul Brannan 9/4/98)
-#ifndef __MINGW32__
-#include <winsock.h>
-#else
-#include <Windows32/sockets.h>
-#endif
-
 /*
 * Copyright (c) 1983 Regents of the University of California.
 * All rights reserved.

@@ -3,12 +3,12 @@
 # Last modified 4/15/2000 by Paul Brannan
 #
 
-SRCDIR=src
+SRCDIR=./src
 OBJDIR=src
 RESDIR=resource
 
-SRC=$(foreach dir,$(SRCDIR)/,$(wildcard $(dir)/*.cpp))
-RESOURCES=$(foreach dir,$(RESDIR)/,$(wildcard $(dir)/*.rc))
+SRC=$(wildcard $(SRCDIR)/*.cpp)
+RESOURCES=$(wildcard $(RESDIR)/*.rc)
 OBJ1=$(SRC:.c=.o)
 OBJ=$(OBJ1:.cpp=.o) $(RESOURCES:.rc=.o)
 
@@ -22,8 +22,8 @@ OUT=telnet.exe
 # --CYGWIN--
 #CC=gcc
 #CCC=g++
-#LDFLAGS=-lwsock32
-#CFLAGS=-O2 -Wall -mwindows -mno-cygwin
+#LDFLAGS=-lwsock32 -lmsvcrt
+#CFLAGS=-O2 -Wall -mwindows -mno-cygwin -D__CYGWIN__
 #CCFLAGS=$(CFLAGS)
 #RES=
 #RC=windres
@@ -52,10 +52,7 @@ RCFLAGS=
 
 # You should not have to modify anything below this line
 
-all: setup dep $(OUT)
-
-setup:
-	if not exist obj mkdir obj
+all: dep $(OUT)
 
 .SUFFIXES: .c .cpp .rc
 
@@ -79,7 +76,8 @@ dep:
 
 clean:
 	del $(OBJDIR)\*.o
-	del $(OUT)# DO NOT DELETE
+	del $(OUT)
+
 # DO NOT DELETE
 
 src/ansiprsr.o: src/ansiprsr.h src/tnconfig.h src/tnerror.h src/tnmsg.h

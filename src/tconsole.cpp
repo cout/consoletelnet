@@ -47,7 +47,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <windows.h>
-#include <assert.h>
 #include "tconsole.h"
 
 // argsused doesn't work on MSVC++
@@ -389,7 +388,6 @@ unsigned long TConsole::WriteStringFast(const char* pszString, unsigned long cbS
 
 			// We need to update the ConsoleInfo struct now (Paul Brannan 5/9/98)
 			ConsoleInfo.dwCursorPosition.X = CON_RIGHT;
-			assert(CON_CUR_X >= 0);
 
 			return iFakeResult; // Skip the chars that did not fit
 		}
@@ -403,7 +401,6 @@ unsigned long TConsole::WriteStringFast(const char* pszString, unsigned long cbS
 
 				// We need to update the ConsoleInfo struct now (Paul Brannan 5/9/98)
 				ConsoleInfo.dwCursorPosition.X += (unsigned short)Result;
-				assert(CON_CUR_X >= 0);
 			}
 
 			return iFakeResult; // Skip the chars that did not fit
@@ -442,7 +439,6 @@ unsigned long TConsole::WriteStringFast(const char* pszString, unsigned long cbS
 
 			// Update the ConsoleInfo struct
 			ConsoleInfo.dwCursorPosition.X = CON_RIGHT + 1;
-			assert(CON_CUR_X >= 0);
 
 			return Result + 1;
 		}
@@ -490,7 +486,6 @@ unsigned long TConsole::WriteString(const char* pszString, unsigned long cbStrin
 
 		// We need to update the ConsoleInfo struct now (Paul Brannan 5/9/98)
 		ConsoleInfo.dwCursorPosition.X += (unsigned short)Result;
-		assert(CON_CUR_X >= 0);
 		SetConsoleCursorPosition(hConsole, ConsoleInfo.dwCursorPosition);
 
 		return iFakeResult; // Skip the chars that did not fit
@@ -540,7 +535,6 @@ unsigned long TConsole::WriteString(const char* pszString, unsigned long cbStrin
 
 		return temp;
 	}
-	assert(CON_CUR_X >= 0);
 
 	return 0;
 }

@@ -7,10 +7,14 @@
 #include <windows.h>
 
 // Mingw32 doesn't use winsock.h (Paul Brannan 9/4/98)
-#ifndef __MINGW32__
+#ifdef __MINGW32__
+#ifdef __CYGWIN__
 #include <winsock.h>
 #else
 #include <Windows32/sockets.h>
+#endif
+#else
+#include <winsock.h>
 #endif
 
 enum NetworkType {TN_NETSOCKET, TN_NETPIPE};
