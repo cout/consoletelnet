@@ -60,13 +60,13 @@ setup:
 .SUFFIXES: .c .cpp .rc
 
 .c.o:
-	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@@
+	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
 
 .cpp.o:
-	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@@
+	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
 
 .rc.o:
-	$(RC) -i $< $(RCFLAGS) -o $@@
+	$(RC) -i $< $(RCFLAGS) -o $@
 
 $(OUT): $(OBJ)
 	$(CCC) $(OBJ) $(LDFLAGS) $(LIBS) -o $(OUT)
