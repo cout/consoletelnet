@@ -11,8 +11,8 @@ int GetWin32Version(void);
 
 HWND GetConsoleWindow();
 
-bool SetIcon(HANDLE hConsoleWindow, HANDLE hIcon, LPARAM *pOldBIcon, LPARAM *pOldSIcon,
+bool SetIcon(HWND hConsoleWindow, HANDLE hIcon, LPARAM *pOldBIcon, LPARAM *pOldSIcon,
 			 const char *icondir);
-void ResetIcon(HANDLE hConsoleWindow, LPARAM oldBIcon, LPARAM oldSIcon);
+void ResetIcon(HWND hConsoleWindow, LPARAM oldBIcon, LPARAM oldSIcon);
 
 #endif

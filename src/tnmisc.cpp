@@ -131,7 +131,7 @@ HWND GetConsoleWindow() {
 // Sets the icon of the console window to hIcon
 // If hIcon is 0, then use a default icon
 // hConsoleWindow must be set before calling SetIcon
-bool SetIcon(HANDLE hConsoleWindow, HANDLE hIcon, LPARAM *pOldBIcon, LPARAM *pOldSIcon,
+bool SetIcon(HWND hConsoleWindow, HANDLE hIcon, LPARAM *pOldBIcon, LPARAM *pOldSIcon,
 			 const char *icondir) {
 	if(!hConsoleWindow) return false;
 	
@@ -175,7 +175,7 @@ bool SetIcon(HANDLE hConsoleWindow, HANDLE hIcon, LPARAM *pOldBIcon, LPARAM *pOl
 
 // Allows SetIcon to be called again by resetting the current icon
 // Added 12/17/98 by Paul Brannan
-void ResetIcon(HANDLE hConsoleWindow, LPARAM oldBIcon, LPARAM oldSIcon) {
+void ResetIcon(HWND hConsoleWindow, LPARAM oldBIcon, LPARAM oldSIcon) {
 #ifdef ICON_BIG
 	SendMessage(hConsoleWindow, WM_SETICON, ICON_BIG, (LPARAM)oldBIcon);
 #endif
