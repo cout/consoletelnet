@@ -846,7 +846,7 @@ void TConsole::DeleteCharacter(int numchar)
 	from.Left =		CON_LEFT + (SHORT)actx;
 	from.Top =		CON_TOP + (SHORT)GetCursorY();
 	from.Right =	CON_LEFT + (SHORT)CON_COLS;
-	from.Bottom =	CON_TOP + from.Top;
+	from.Bottom =	/*CON_TOP +*/ from.Top;
 	
 	clip = from;
 	to.X = (SHORT)(actx - numchar);
