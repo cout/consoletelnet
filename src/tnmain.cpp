@@ -351,8 +351,11 @@ int main(int ArgC, char* ArgV[]) {
 			while(telCommandLine(MyConnection));
 		} else {
 			Telnet MyConnection;
-			if(MyConnection.Open(szHost, strPort) == TNPROMPT) // still connected
+			if(MyConnection.Open(szHost, strPort) == TNPROMPT) {
+				// still connected
+				printit("\n");
 				telCommandLine(MyConnection);
+			}
 		}
 	}
 	//// (Paul Brannan 5/14/98)
