@@ -35,8 +35,8 @@
 //            July 29, 1998 Paul Brannan
 //            June 15, 1998 Paul Brannan
 //            May 16, 1998 Paul Brannan
-//            5.April.1997 jbj@chrysalis.org
-//            9.Dec.1996 jbj@chrysalis.org
+//            5.April.1997 jbj@nounname.com
+//            9.Dec.1996 jbj@nounname.com
 //            Version 2.0
 //
 //            02.Apr.1995	igor.milavec@uni-lj.si

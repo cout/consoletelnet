@@ -26,7 +26,7 @@ mode.  Most of it's options are customizable.
                          COPYRIGHT/LICENSE/WARRANTY
                          --------------------------
 
-Telnet Win32, Copyright (C) 1996-1997, Brad Johnson <jbj@chrysalis.org>
+Telnet Win32, Copyright (C) 1996-1997, Brad Johnson <jbj@nounname.com>
 Copyright (C) 1998 I.Ioannou, Copyright (C) 1999 Paul Brannan.  Telnet is
 a free project released under the GNU public license.  This program comes
 with ABSOLUTELY NO WARRANTY.  This is free software, and you are welcome
@@ -191,7 +191,7 @@ Igor Milavec <igor.milavec@uni-lj.si>
         Original Author of version 1.1
         Igor wrote the basic telnet program and released it to public.
 
-Brad Johnson <jbj@chrysalis.org> http://www.chrysalis.org/jbj
+Brad Johnson <jbj@nounname.com>  http://nounname.com
         Author of versions 2.0b to 2b4. Brad has wrote plenty of code for
         telnet like ansi colors, emulation, scrollback option, and many
         others.

@@ -150,7 +150,7 @@ December 1997
 
 Version 2.0b4 10/6/97
 -Updated by Brad Johnson who can be contacted at
-  <jbj@chrysalis.org>  http://www.chrysalis.org/jbj
+  <jbj@nounname.com>  http://nounname.com
 -Changes
   Added command line history at the telnet> prompt.
   Added ability to "unmap" a key by setting it equal to \000 in the key.cfg.
@@ -172,7 +172,7 @@ Version 2.0b4 10/6/97
 
 Version 2.0b3  12/25/96:
 -Updated by Brad Johnson who can be contacted at
-  <jbj@chrysalis.org>  http://www.chrysalis.org/jbj
+  <jbj@nounname.com>  http://nounname.com
 -Changes
   Screen colors and buffer settings are now preserved on exit.
   Fixed WindowSize height/width 255 exception :-).
@@ -194,7 +194,7 @@ Version 2.0b3  12/25/96:
 
 Version 2.0b2  09/29/96:
 -Updated by Brad Johnson who can be contacted at
-  <jbj@chrysalis.org>  http://www.chrysalis.org/jbj
+  <jbj@nounname.com>  http://nounname.com
 -Changes
   Added code to move cursor to end of screen and reset attributes on close
   Fixed potential IAC parsing problem
@@ -209,7 +209,7 @@ Version 2.0b2  09/29/96:
 
 Version 2.0b1  09/22/96:
 -Updated by Brad Johnson who can be contacted at
-  <jbj@chrysalis.org>  http://www.chrysalis.org/jbj
+  <jbj@nounname.com>  http://nounname.com
 -Changes
   Added Color ANSI support. It works!
   Added option for user specified port addresses on the command line.

@@ -39,9 +39,9 @@
 //            05. Sep.1997  roryt@hol.gr (I.Ioannou)
 //            11.May.1997   roryt@hol.gr (I.Ioannou)
 //            6.April.1997  roryt@hol.gr (I.Ioannou)
-//            5.April.1997  jbj@chrysalis.org
+//            5.April.1997  jbj@nounname.com
 //            30.M„rz.1997	Titus_Boxberg@public.uni-hamburg.de
-//		      14.Sept.1996  jbj@chrysalis.org
+//		      14.Sept.1996  jbj@nounname.com
 //            Version 2.0
 //
 //            13.Jul.1995	igor.milavec@uni-lj.si

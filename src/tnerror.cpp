@@ -33,8 +33,8 @@
 //
 // Revisions: June 15, 1998 Paul Brannan <pbranna@clemson.edu>
 //            May 15, 1998 Paul Brannan
-//            5.April.1997 jbj@chrysalis.org
-//            5.Dec.1996 jbj@chrysalis.org
+//            5.April.1997 jbj@nounname.com
+//            5.Dec.1996 jbj@nounname.com
 //            Version 2.0
 //
 //            02.Apr.1995	igor.milavec@uni-lj.si

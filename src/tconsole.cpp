@@ -39,7 +39,7 @@
 //            11.May,1997   roryt@hol.gr
 //            06.April,1997 roryt@hol.gr
 //            30.M„rz.1997  Titus_Boxberg@public.uni-hamburg.de
-//		      5.Dec.1996    jbj@chrysalis.org
+//		      5.Dec.1996    jbj@nounname.com
 //            Version 2.0
 //            02.Apr.1995	igor.milavec@uni-lj.si
 //					  Original code

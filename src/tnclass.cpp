@@ -35,8 +35,8 @@
 //            July 12, 1998 Paul Brannan
 //            June 15, 1998 Paul Brannan
 //            May 14, 1998	Paul Brannan
-//            5.April.1997 jbj@chrysalis.org
-//            14.Sept.1996 jbj@chrysalis.org
+//            5.April.1997 jbj@nounname.com
+//            14.Sept.1996 jbj@nounname.com
 //            Version 2.0
 //
 ///////////////////////////////////////////////////////////////////////////////
