@@ -966,13 +966,20 @@ char* TANSIParser::ParseBuffer(char* pszHead, char* pszTail){
 		if(!ini.get_output_redir()) {
 			pszResult = ParseANSIBuffer(pszHead, pszTail);
 		} else {
-			DWORD Result;
-			// Paul Brannan 7/29/98
-			// Note that this has the unforunate effect of printing out
-			// NULL (ascii 0) characters onto the screen
-			if (!WriteFile(GetStdHandle(STD_OUTPUT_HANDLE),	pszHead,
-				pszTail - pszHead, &Result,	NULL)) pszResult = pszHead;
-			pszResult = pszHead + Result;
+			// Output is being redirected
+			if(ini.get_strip_redir()) {
+				// Skip the WriteFile() altogether and pass the buffer to a filter
+				// Mark Miesfield 09/24/2000
+				pszResult = PrintGoodChars(pszHead, pszTail);
+			} else {
+				DWORD Result;
+				// Paul Brannan 7/29/98
+				// Note that this has the unforunate effect of printing out
+				// NULL (ascii 0) characters onto the screen
+				if (!WriteFile(GetStdHandle(STD_OUTPUT_HANDLE),	pszHead,
+					pszTail - pszHead, &Result,	NULL)) pszResult = pszHead;
+				pszResult = pszHead + Result;
+			}
 		}
 		if (dumpfile)
 			fwrite( pszHead, sizeof (char), pszResult-pszHead, dumpfile);
@@ -1230,3 +1237,71 @@ char* TANSIParser::PrintBuffer(char* pszBuffer, char* pszBufferEnd) {
 	
 	return pszBuffer;
 }
+
+/* - PrintGoodChars( pszHead, pszTail ) - - - - - - - - - - - - - - - - - - -
+-*
+
+  Mark Miesfield 09/24/2000
+
+  Prints the characters in a buffer, from the specified head to the specified
+  tail, to standard out, skipping any control characters or ANSI escape
+  sequences.
+
+  Parameters on entry:
+    pszHead  ->  Starting point in buffer.
+
+    pszTail  ->  Ending point in buffer.
+
+  Returns:
+    Pointer to the first character in the buffer that was not output to
+    standard out.  (Since no error checking is done, this is in effect
+    pszTail.)
+
+  Side Effects:
+    None.
+* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*/
+char * TANSIParser::PrintGoodChars( char * pszHead, char * pszTail )  {
+
+  while ( pszHead < pszTail )  {
+    if ( iscntrl( *pszHead ) )  {
+      switch ( *(pszHead++) )  {
+        case 10 :
+          putc( 10, stdout );
+          break;
+
+        case 13 :
+          putc( 13, stdout );
+          break;
+
+        case 27:
+          switch ( *(pszHead++) )  {
+            case 'Y':
+              pszHead += 2;
+              break;
+
+            case '#':
+            case '(':
+            case ')':
+            case '%': pszHead++; break;
+            case '[':
+              while ( (pszHead < pszTail) && (*pszHead < '?') )
+                pszHead++;
+              pszHead++;
+              break;
+
+            default :
+              break;
+          }
+          break;
+
+        default :
+          break;
+      }
+    }
+    else
+      putc( *(pszHead++), stdout );
+  }
+  return ( pszTail );
+}
+// End of function:  PrintGoodChars( pszHead, pszTail )

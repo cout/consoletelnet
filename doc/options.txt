@@ -97,7 +97,15 @@ respond faster.  (Default = 2048)
 
 Input_redir
 Output_redir
-These are for redirecting input and output.  (Default = FALSE, FALSE)
+These are for redirecting input and output.  (Default = 0, 0)
+Any value greater than 0 turns redir on.  Turn Output_redir on to bypass
+the Console Telnet screen writing and positioning functions and simply
+pass the data stream as received from the host straight through.
+
+Strip_redir
+If enabled, this option will attempt to strip the stream before passing it on
+through redirected output.  This will have no effect on non-redirected output.
+(Default=FALSE)
 
 [Colors] section
 

@@ -49,8 +49,9 @@
 // changed to make work with VC++ (Paul Brannan 5/25/98)
 // FIX ME !!! Ioannou:  This must be __BORLANDC__ && VERSION < 5
 // but what is the directive for Borland version ????
+// FIXED Sept. 31, 2000 (Bernard Badger)
 //
-#ifdef __BORLANDC__
+#if defined(__BORLANDC__) && (__BORLANDC < 0x0500)
 #include <mem.h>
 #else
 #include <memory.h>

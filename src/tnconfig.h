@@ -42,6 +42,7 @@ public:
 	// Terminal settings
 	int get_input_redir() const {return input_redir;}
 	int get_output_redir() const {return output_redir;}
+	bool get_strip_redir() const {return strip_redir;}
 	bool get_dstrbksp() const {return dstrbksp;}
 	bool get_eightbit_ansi() const {return eightbit_ansi;}
 	bool get_vt100_mode() const {return vt100_mode;}
@@ -140,6 +141,7 @@ private:
 
 	// Terminal
 	int input_redir, output_redir;
+	bool strip_redir;
 	bool dstrbksp;
 	bool eightbit_ansi;
 	bool vt100_mode;

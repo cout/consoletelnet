@@ -59,6 +59,7 @@ TConfig::TConfig() {
 
 	input_redir = 0;
 	output_redir = 0;
+	strip_redir = FALSE;
 
 	dstrbksp = FALSE;
 	eightbit_ansi = FALSE;
@@ -135,6 +136,7 @@ enum {
 	TERM,
 	INPUT_REDIR,
 	OUTPUT_REDIR,
+	STRIP_REDIR,
 	DSTRBKSP,
 	EIGHTBIT_ANSI,
 	VT100_MODE,
@@ -218,6 +220,7 @@ void TConfig::init_varlist() {
 		{"Term",		"Terminal",		INI_STRING,		&term,		sizeof(term)},
 		{"Input_Redir",	"Terminal",		INI_INT,		&input_redir, 0},
 		{"Output_Redir","Terminal",		INI_INT,		&output_redir, 0},
+		{"Strip_Redir",	"Terminal",		INI_BOOL,		&strip_redir, 0},
 		{"Destructive_Backspace","Terminal",INI_BOOL,	&dstrbksp, 0},
 		{"EightBit_Ansi","Terminal",	INI_BOOL,		&eightbit_ansi, 0},
 		{"VT100_Mode",	"Terminal",		INI_BOOL,		&vt100_mode, 0},
@@ -604,9 +607,9 @@ void TConfig::redir_init() {
 		input_redir = output_redir = GetPrivateProfileInt("Terminal",
 			"Telnet_Redir", 0, inifile);
 		input_redir = GetPrivateProfileInt("Terminal",
-			"Telnet_Redir", input_redir, inifile);
+			"Input_Redir", input_redir, inifile);
 		output_redir = GetPrivateProfileInt("Terminal",
-			"Telnet_Redir", output_redir, inifile);
+			"Output_Redir", output_redir, inifile);
 	}
 	if ((input_redir > 1) || (output_redir > 1))
 		setlocale(LC_CTYPE,"");

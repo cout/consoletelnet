@@ -26,6 +26,7 @@ private:
 	char* ParseEscape(char* pszBuffer, char* pszBufferEnd);
 	// Added by I.Ioannou 06/04/97
 	char* PrintBuffer(char* pszBuffer, char* pszBufferEnd);
+	char* PrintGoodChars(char * pszHead, char * pszTail);
 
 	void ConSetAttribute(unsigned char wAttr);
 	char *GetTerminalID();
