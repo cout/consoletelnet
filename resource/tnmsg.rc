@@ -100,4 +100,8 @@ BEGIN
     MSG_KEYMAPSWITCHED      "keymap switched.\n"
 END
 
+#ifdef __MINGW32__
+TelnetIcon ICON "telnet.ico"
+#else
 TelnetIcon ICON "../telnet.ico"
+#endif
