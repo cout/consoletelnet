@@ -1,6 +1,6 @@
-              *************************************************
-              ** Console Telnet v2.1  README.TXT 05 Apr 2000 **
-              *************************************************
+              **************************************************
+              ** Console Telnet v2.1b2 README.TXT 16 Oct 2000 **
+              **************************************************
 
                                RELEASE NOTES:
                                --------------
@@ -27,8 +27,8 @@ mode.  Most of it's options are customizable.
                          --------------------------
 
 Telnet Win32, Copyright (C) 1996-1997, Brad Johnson <jbj@nounname.com>
-Copyright (C) 1998 I.Ioannou, Copyright (C) 1999 Paul Brannan.  Telnet is
-a free project released under the GNU public license.  This program comes
+Copyright (C) 1998 I.Ioannou, Copyright (C) 1999-2000 Paul Brannan.  Telnet
+is a free project released under the GNU public license.  This program comes
 with ABSOLUTELY NO WARRANTY.  This is free software, and you are welcome
 to redistribute it under the licence contitions.  See LICENSE.TXT for
 details.
@@ -267,6 +267,13 @@ Craig Nellist
 
 Jakub Sterba
         Czech keyboard definition
+
+Ziglio Frediano
+        MTE (Meridian Terminal) Support
+
+Mark Miesfield
+	Fixed redirection
+	Wrote documentation for redirection
 
 ---
 

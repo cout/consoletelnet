@@ -2,8 +2,12 @@
                 *** Console Telnet version 2.1 Change log  ***
                 **********************************************
 
-Version 2.1b2 -- ?
-  Significant speed improvements in ttelhndl.cpp -- may be buggy?
+Version 2.1b2 -- October 16, 2000
+  Redirection fix (Mark Miesfield)
+  Allow "o" to open a connecton on the command line
+  Fixed problem with special keys (ALt-[, Alt-], Alt-\, etc.)
+  Added MTE Support (Ziglio Frediano)
+  Speed improvements in ttelhndl.cpp -- may be buggy?
   Wrap_line option is now modifiable via telnet command line
   Lock_linewrap option added
   Cleaned up console code
@@ -11,7 +15,7 @@ Version 2.1b2 -- ?
   Tab setting/resetting
   Fixed "telnet.exe" installer problem
   Fixed miscellaneous parsing bugs
-  Restored broken vt100-compliance
+  Fixed vt100-compliance
   Added NAWS support, but it doesn't work (RFC 1073)
   Added X Display Location support (RFC 1096)
 
